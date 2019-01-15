@@ -24,6 +24,14 @@ type Mutation {
   fight(leftId: ID!, rightId: ID!): DeathmatchResult!
 }
 
+type Subscription {
+  blowByBlow(leftId: ID!, rightId: ID!): Sub!
+}
+
+type Sub {
+  id: ID!
+}
+
 type DeathmatchResult{
   rounds: Int!
   winner: String!

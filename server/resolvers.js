@@ -56,6 +56,16 @@ module.exports = {
       }
     }
   },
+  Subscription: {
+    blowByBlow: {
+      subscribe: (_, __, { pubsub }) => {
+        const channel = Math.random().toString(36).substring(2, 15) // random channel name
+        let count = 0
+        setInterval(() => pubsub.publish(channel, nextRound()), 500)
+        return pubsub.asyncIterator(channel)
+      },
+    }
+  },
   Challenger: {
     record: ({ id }) => scoreboard[id] || { wins: 0, losses: 0 }
   }
