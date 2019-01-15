@@ -1,0 +1,25 @@
+{
+  "name": "deathmatch-server",
+  "version": "1.0.0",
+  "description": "Two Github repos fight to the death!",
+  "main": "index.js",
+  "author": "Jack Smith <jack@sythas.com>",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "apollo-cache-inmemory": "^1.3.12",
+    "apollo-client": "^2.4.8",
+    "apollo-link-http": "^1.5.9",
+    "cuid": "^2.1.4",
+    "dotenv": "^6.2.0",
+    "graphql-tag": "^2.10.0",
+    "graphql-yoga": "^1.16.9",
+    "node-fetch": "^2.3.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.9"
+  },
+  "scripts": {
+    "start": "nodemon"
+  }
+}
