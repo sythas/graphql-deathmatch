@@ -1,5 +1,3 @@
-scalar DateTime
-
 type Challenger {
   id: ID!
   avatarUrl: String

@@ -22,6 +22,33 @@ mutation FIGHT($leftId: ID!, $rightId: ID!) {
 }
 `
 
+const colGrid = {
+  display: 'grid',
+  gridGap: '1em',
+  justifyItems: 'center',
+  alignItems: 'center'
+}
+
+const col2Grid = {
+  ...colGrid,
+  gridAutoFlow: 'column',
+  gridtemplateColumns: 'repeat(2, 1fr)',
+}
+
+const inputStyle = {
+  fontSize: '1.4em',
+  width: '400px'
+}
+
+const buttonStyle = {
+  fontSize: '1.4em'
+}
+
+const imgStyle = {
+  height: '200px',
+  width: '200px'
+}
+
 class Deathmatch extends React.Component {
   state = {
     leftId: '',
@@ -37,22 +64,27 @@ class Deathmatch extends React.Component {
     return (
       <Mutation mutation={FIGHT} variables={this.state}>
         {(fight, { data, error, loading }) => {
-          console.log(data)
           return (
             <>
-              <input name="leftId" value={this.state.leftId} onChange={this.handleChange} placeholder="Repo 1" />
-              <input name="rightId" value={this.state.rightId} onChange={this.handleChange} placeholder="Repo 1" />
-              <button onClick={fight}>FIGHT!</button>
-              {loading && <p>Loading...</p>}
-              {error && <p>{error.message}</p>}
-              {data && (
-                <>
-                  <p>Winner</p>
-                  {data.fight.winner && <img style={{ height: '100px', width: '100px' }} src={data.fight.winnerAvatarUrl} alt="winner" />}
-                  {!data.fight.winner && <p>Everyone <span role="img" aria-label="No Winner">💀</span> Died...</p>}
-                </>
-
-              )}
+              <div style={col2Grid}>
+                <input name="leftId" style={inputStyle} value={this.state.leftId} onChange={this.handleChange} placeholder="Repo 1" />
+                <input name="rightId" style={inputStyle} value={this.state.rightId} onChange={this.handleChange} placeholder="Repo 1" />
+              </div>
+              <div style={colGrid}>
+                <button style={buttonStyle} onClick={fight}>FIGHT!</button>
+              </div>
+              <div style={colGrid}>
+                {loading && <p>Loading...</p>}
+                {error && <p>{error.message}</p>}
+                {data && (
+                  <>
+                    <p>Winner</p>
+                    {data.fight.winner && <img style={imgStyle} src={data.fight.winnerAvatarUrl} alt="winner" />}
+                    {!data.fight.winner && <p>Everyone <span role="img" aria-label="No Winner">💀</span> Died...</p>}
+                  </>
+                )}
+              </div>
+              <div>{JSON.stringify(data, null, 2)}</div>
             </>
           )
         }}
