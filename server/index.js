@@ -1,12 +1,18 @@
 require('dotenv').config()
-const { GraphQLServer } = require('graphql-yoga')
+const { readFileSync } = require('fs')
+const { ApolloServer, gql } = require('apollo-server')
 
-const server = new GraphQLServer({
-  typeDefs: './schema.graphql',
-  resolvers: require('./resolvers'),
+const typeDefs = readFileSync('./schema.graphql', 'UTF8')
+const resolvers = require('./resolvers')
+
+const server = new ApolloServer({
+  typeDefs,
+  resolvers,
   context: {
     getChallenger: require('./api/github')
   }
 })
 
-server.start(() => console.log('Server is running on localhost:4000'))
+server.listen().then(({ url }) => {
+  console.log(`🚀  Server ready at ${url}`);
+});

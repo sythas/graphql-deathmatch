@@ -5,6 +5,7 @@ let scoreboard = {}
 
 module.exports = {
   Query: {
+    // parent, args, context, info
     getRecord: (_, { id }) => scoreboard[id] || { wins: 0, losses: 0 },
     challenger: async (_, { id }, { getChallenger }) => {
       return await getChallenger(id)
@@ -57,6 +58,9 @@ module.exports = {
     }
   },
   Challenger: {
-    record: ({ id }) => scoreboard[id] || { wins: 0, losses: 0 }
+    record: ({ id }) => {
+      console.log("record")
+      return scoreboard[id] || { wins: 0, losses: 0 }
+    }
   }
 }

@@ -1,0 +1,22 @@
+{
+  firstName: "Jim",
+  lastName: "Holden",
+  names: [
+    { firstName: "Jim", lastName: "Holden" },
+    { firstName: "Amos", lastName: "Burton" },
+    { firstName: "Naomi", lastName: "Nagata" }
+  ]
+}
+
+Then, when you add a name just:
+
+const name = { firstName: "Jim", lastName: "Holden" }
+// update array
+this.names.push(name)
+
+// update legacy names
+if (!this.firstName)
+  this.firstName = name.firstName
+if (!this.lastName)
+  this.lastName = name.lastName
+

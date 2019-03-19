@@ -1,19 +1,11 @@
-const gql = require('graphql-tag')
-const { ApolloClient } = require('apollo-client')
-const { InMemoryCache } = require('apollo-cache-inmemory')
-const { HttpLink } = require('apollo-link-http')
+const { ApolloClient, InMemoryCache, HttpLink, gql } = require('apollo-boost')
 
-const cache = new InMemoryCache();
 const client = new ApolloClient({
-  cache,
+  cache: new InMemoryCache(),
   link: new HttpLink({
     uri: 'https://api.github.com/graphql',
     fetch: require('node-fetch'),
-    headers: {
-      authorization: `bearer ${process.env.GITHUB_TOKEN}`,
-      'client-name': 'GraphQL Deathmatch',
-      'client-version': '1.0.0',
-    },
+    headers: { authorization: `bearer ${process.env.GITHUB_TOKEN}` },
   })
 });
 

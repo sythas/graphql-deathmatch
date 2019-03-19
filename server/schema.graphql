@@ -14,6 +14,7 @@ type Record {
 }
 
 type Query {
+  "Get repositories scoreboard"
   getRecord(id: ID!): Record!
   challenger(id: ID!): Challenger!
 }

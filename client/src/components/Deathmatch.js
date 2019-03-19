@@ -1,26 +1,6 @@
-import React from 'react';
-import { Mutation } from "react-apollo";
-import gql from 'graphql-tag'
-
-const FIGHT = gql`
-mutation FIGHT($leftId: ID!, $rightId: ID!) {
-  fight(leftId: $leftId, rightId: $rightId) {
-    rounds
-    winner
-    winnerAvatarUrl
-    right {
-      id
-      hitPoints
-      damage
-    }
-    left {
-      id
-      hitPoints
-      damage
-    }
-  }
-}
-`
+import { gql } from 'apollo-boost'
+import React, { useState } from 'react'
+import { Mutation } from 'react-apollo'
 
 const colGrid = {
   display: 'grid',
@@ -49,48 +29,64 @@ const imgStyle = {
   width: '200px'
 }
 
-class Deathmatch extends React.Component {
-  state = {
-    leftId: '',
-    rightId: ''
-  }
-
-  handleChange = e => {
-    const { name, value } = e.target
-    this.setState({ [name]: value })
-  }
-
-  render() {
-    return (
-      <Mutation mutation={FIGHT} variables={this.state}>
-        {(fight, { data, error, loading }) => {
-          return (
-            <>
-              <div style={col2Grid}>
-                <input name="leftId" style={inputStyle} value={this.state.leftId} onChange={this.handleChange} placeholder="Repo 1" />
-                <input name="rightId" style={inputStyle} value={this.state.rightId} onChange={this.handleChange} placeholder="Repo 1" />
-              </div>
-              <div style={colGrid}>
-                <button style={buttonStyle} onClick={fight}>FIGHT!</button>
-              </div>
-              <div style={colGrid}>
-                {loading && <p>Loading...</p>}
-                {error && <p>{error.message}</p>}
-                {data && (
-                  <>
-                    <p>Winner</p>
-                    {data.fight.winner && <img style={imgStyle} src={data.fight.winnerAvatarUrl} alt="winner" />}
-                    {!data.fight.winner && <p>Everyone <span role="img" aria-label="No Winner">💀</span> Died...</p>}
-                  </>
-                )}
-              </div>
-              <div>{JSON.stringify(data, null, 2)}</div>
-            </>
-          )
-        }}
-      </Mutation>
-    )
+const FIGHT = gql`
+mutation FIGHT($leftId: ID!, $rightId: ID!) {
+  fight(leftId: $leftId, rightId: $rightId) {
+    rounds
+    winner
+    winnerAvatarUrl
+    right {
+      id
+      hitPoints
+      damage
+    }
+    left {
+      id
+      hitPoints
+      damage
+    }
   }
 }
+`
 
-export default Deathmatch
+export default () => {
+  const [leftId, setLeftId] = useState('')
+  const [rightId, setRightId] = useState('')
+
+  // const setLeftId = () => { }
+  // const setRightId = () => { }
+  // const data = null
+  // const error = false
+  // const loading = false
+  // const fight = () => { }
+  // const leftId = ''
+  // const rightId = ''
+
+  return (
+    <Mutation mutation={FIGHT} variables={{ leftId, rightId }}>
+      {(fight, { data, loading, error }) => (
+        <>
+          <div style={col2Grid}>
+            <input style={inputStyle} value={leftId} onChange={evt => setLeftId(evt.target.value)} placeholder="Repo 1" />
+            <input style={inputStyle} value={rightId} onChange={evt => setRightId(evt.target.value)} placeholder="Repo 1" />
+          </div>
+          <div style={colGrid}>
+            <button style={buttonStyle} onClick={() => fight({ variables: { leftId, rightId } })}>FIGHT!</button>
+          </div>
+          <div style={colGrid}>
+            {loading && <p>Loading...</p>}
+            {error && <p>{error.message}</p>}
+            {data && (
+              <>
+                <p>Winner</p>
+                {data.fight.winner && <img style={imgStyle} src={data.fight.winnerAvatarUrl} alt="winner" />}
+                {!data.fight.winner && <p>Everyone <span role="img" aria-label="No Winner">💀</span> Died...</p>}
+              </>
+            )}
+          </div>
+          <div>{JSON.stringify(data, null, 2)}</div>
+        </>
+      )}
+    </Mutation>
+  )
+}
